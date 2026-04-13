@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:github_blog/widgets/main_screen.dart';
+import 'package:github_blog/screens/desktop_widget.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Color.fromARGB(255, 131, 57, 0),
+    seedColor: Color.fromARGB(255, 0, 9, 131),
     brightness: Brightness.dark,
+  ),
+  textTheme: TextTheme(
+    headlineLarge: TextStyle(decoration: TextDecoration.underline),
   ),
 );
 
@@ -17,6 +20,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: theme, home: MainScreen());
+    return MaterialApp(
+      theme: theme,
+      home: LayoutBuilder(
+        builder: (context, constraints) {
+          //desktop
+          if (constraints.maxWidth < 600) {
+            //mobile
+          }
+
+          return DesktopWidget();
+        },
+      ),
+    );
   }
 }

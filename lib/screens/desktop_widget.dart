@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_blog/widgets/entry_widget.dart';
 import 'package:github_blog/widgets/main_drawer.dart';
 
 class DesktopWidget extends StatelessWidget {
@@ -12,12 +13,12 @@ class DesktopWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: AppBar(
-        title: Center(
-          child: const Text(
-            'Flutter development blog',
-            style: TextStyle(fontSize: 40),
-          ),
+        centerTitle: true,
+        title: const Text(
+          'Flutter development blog',
+          style: TextStyle(fontSize: 40),
         ),
+
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu),
@@ -26,26 +27,14 @@ class DesktopWidget extends StatelessWidget {
           ),
         ),
       ),
-      drawer: MainDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
 
-          children: [
-            SizedBox(height: 300),
-            SizedBox(
-              width: screenWidth - 100,
-              child: Container(
-                constraints: BoxConstraints.expand(height: 100),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                ),
-                child: Text('Todays Entry', textAlign: TextAlign.center),
-              ),
-            ),
-          ],
+      drawer: MainDrawer(),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          verticalDirection: VerticalDirection.down,
+          children: [SizedBox(height: 200), EntryWidget()],
         ),
       ),
     );
