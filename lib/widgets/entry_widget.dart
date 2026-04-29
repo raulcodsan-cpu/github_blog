@@ -59,7 +59,7 @@ class EntryWidget extends StatelessWidget {
             ),
           ),
           Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.white)),
+            //decoration: BoxDecoration(border: Border.all(color: Colors.white)),
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(8),
             //height: 300,
