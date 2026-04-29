@@ -43,14 +43,12 @@ class _DestopWidget extends State<DesktopWidget> {
 
     // response format : {-OqPoJd95Hafu2jrU0Zq: {likes: 0, title: Starting up a blog to share progress!}, -OqPoKl1-QRWpsxsKXGI: {likes: 0, title: Progress report on Flutter development.}}
     for (var resDataEntry in responseData.entries) {
-      print(resDataEntry);
       _loadedList.add(
         EntryData(
           id: resDataEntry.key,
           title: resDataEntry.value['title'],
           subtitle: resDataEntry.value['subtitle'],
           body: resDataEntry.value['body'],
-          likes: resDataEntry.value['likes'],
         ),
       );
     }

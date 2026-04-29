@@ -2,20 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:github_blog/data/entry_data.dart';
 import 'package:github_blog/widgets/like_button.dart';
 
-
 class EntryWidget extends StatelessWidget {
   const EntryWidget({super.key, required this.data});
 
   final EntryData data;
 
-
   @override
   Widget build(BuildContext context) {
-    
-
+    String textWithBreaks = data.body.replaceAll(r'\n', '\n');
 
     return Container(
-      height: 500,
+      //height: 500,
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).colorScheme.inversePrimary),
         borderRadius: BorderRadius.circular(8),
@@ -62,19 +59,20 @@ class EntryWidget extends StatelessWidget {
             ),
           ),
           Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.white)),
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(8),
-            height: 200,
+            //height: 300,
             width: 700,
             child: Text(
-              data.body, //Body of entry
+              textWithBreaks, //Body of entry
               textAlign: TextAlign.left,
-              maxLines: 20,
+              maxLines: 40,
               softWrap: true,
               overflow: TextOverflow.fade,
             ),
           ),
-          SizedBox(height: 60),
+          SizedBox(height: 10),
           LikeButton(data: data),
         ],
       ),

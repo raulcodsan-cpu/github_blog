@@ -6,8 +6,7 @@ class EntryData {
     required this.title,
     required this.subtitle,
     required this.body,
-    required this.likes,
-  });
+  }) : likes = 0;
   //date = DateTime.now();
   final String id;
   //final DateTime date;
