@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:github_blog/data/entry_data.dart';
 import 'package:github_blog/widgets/like_button.dart';
@@ -25,7 +26,7 @@ class EntryWidget extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             height: 40,
-            width: 700,
+            width: 750,
             decoration: BoxDecoration(
               border: BoxBorder.fromLTRB(
                 bottom: BorderSide(
@@ -34,16 +35,31 @@ class EntryWidget extends StatelessWidget {
                 ),
               ),
             ),
-            child: Text(
-              data.title, //Title of entry
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.headlineLarge,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              //spacing: 10,
+              children: [
+                Expanded(
+                  child: AutoSizeText(
+                    data.title, //----------------------------------------- Title of entry
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                    maxLines: 1,
+                  ),
+                ),
+                Text(
+                  "(${data.date.toString().substring(0, 10)})",
+                  style: TextStyle(color: Colors.white30, fontSize: 12),
+                  textAlign: TextAlign.left,
+                ),
+              ],
             ),
           ),
           Container(
             alignment: Alignment.bottomLeft,
+            padding: EdgeInsets.only(bottom: 5),
             height: 50,
-            width: 700,
+            width: 750,
             decoration: BoxDecoration(
               border: BoxBorder.fromLTRB(
                 bottom: BorderSide(
@@ -52,10 +68,11 @@ class EntryWidget extends StatelessWidget {
                 ),
               ),
             ),
-            child: Text(
-              data.subtitle, //Subtitle of entry
-              textAlign: TextAlign.center,
+            child: AutoSizeText(
+              data.subtitle, //----------------------------------------- Subtitle of entry
+              textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.titleLarge,
+              maxLines: 1,
             ),
           ),
           Container(
@@ -63,9 +80,9 @@ class EntryWidget extends StatelessWidget {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(8),
             //height: 300,
-            width: 700,
+            width: 750,
             child: Text(
-              textWithBreaks, //Body of entry
+              textWithBreaks, //------------------------------------------ Body of entry
               textAlign: TextAlign.left,
               maxLines: 40,
               softWrap: true,

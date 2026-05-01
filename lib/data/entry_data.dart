@@ -6,6 +6,7 @@ class EntryData {
     required this.title,
     required this.subtitle,
     required this.body,
+    required this.date,
   }) : likes = 0;
   //date = DateTime.now();
   final String id;
@@ -13,6 +14,7 @@ class EntryData {
   final String title;
   final String subtitle;
   final String body;
+  final DateTime date;
   int likes;
 }
 

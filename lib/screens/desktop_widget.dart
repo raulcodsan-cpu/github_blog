@@ -49,6 +49,7 @@ class _DestopWidget extends State<DesktopWidget> {
           title: resDataEntry.value['title'],
           subtitle: resDataEntry.value['subtitle'],
           body: resDataEntry.value['body'],
+          date: DateTime.parse(resDataEntry.value['date']),
         ),
       );
     }
