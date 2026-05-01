@@ -67,7 +67,6 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
       body: json.encode({'likes': (widget.data.likes + 1)}),
     );
 
-    print(response.statusCode);
     if (response.statusCode >= 200 && response.statusCode < 400) {
       setState(() {
         _isSending = false;
