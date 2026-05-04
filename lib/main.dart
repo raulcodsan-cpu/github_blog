@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_blog/screens/desktop_widget.dart';
+import 'package:github_blog/screens/mobile_widget.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
@@ -27,9 +28,7 @@ class MainApp extends StatelessWidget {
         builder: (context, constraints) {
           //desktop
           if (constraints.maxWidth < 600) {
-            return Scaffold(
-              body: Center(child: Center(child: Text('Mobile'))),
-            );
+            return MobileWidget();
           }
 
           return DesktopWidget();
