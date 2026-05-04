@@ -14,7 +14,6 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormatter = DateFormat.yMd();
-    loadedList.sort((a, b) => b.date.compareTo(a.date));
 
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,

@@ -50,6 +50,7 @@ class _MobileWidgetState extends State<MobileWidget> {
         ),
       );
     }
+    loadedList.sort((a, b) => b.date.compareTo(a.date));
     return loadedList;
   }
 

@@ -50,6 +50,7 @@ class _DestopWidget extends State<DesktopWidget> {
         ),
       );
     }
+    loadedList.sort((a, b) => b.date.compareTo(a.date));
     return loadedList;
   }
 
