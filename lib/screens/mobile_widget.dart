@@ -16,7 +16,7 @@ class MobileWidget extends StatefulWidget {
 class _MobileWidgetState extends State<MobileWidget> {
   var _activeEntry = 0;
   var isLoading = false;
-  final List<EntryData> _loadedList = [];
+  late Future<List<EntryData>> _loadedList;
 
   void _changeEntry(int entryNo) {
     setState(() {
@@ -24,7 +24,7 @@ class _MobileWidgetState extends State<MobileWidget> {
     });
   }
 
-  void _onlineDatabase() async {
+  Future<List<EntryData>> _onlineDatabase() async {
     isLoading = true;
     final url = Uri.https(
       'shoppinglist-81ab6-default-rtdb.firebaseio.com',
@@ -33,15 +33,14 @@ class _MobileWidgetState extends State<MobileWidget> {
     final response = await http.get(url);
 
     if (response.statusCode >= 400 || response.body == 'null') {
-      print('Error retreiving data');
-      return;
+      throw Exception('Error retreiving data');
     }
 
     final Map<String, dynamic> responseData = json.decode(response.body);
-
+    final List<EntryData> loadedList = [];
     // response format : {-OqPoJd95Hafu2jrU0Zq: {likes: 0, title: Starting up a blog to share progress!}, -OqPoKl1-QRWpsxsKXGI: {likes: 0, title: Progress report on Flutter development.}}
     for (var resDataEntry in responseData.entries) {
-      _loadedList.add(
+      loadedList.add(
         EntryData(
           id: resDataEntry.key,
           title: resDataEntry.value['title'],
@@ -51,28 +50,53 @@ class _MobileWidgetState extends State<MobileWidget> {
         ),
       );
     }
-    setState(() {
-      isLoading = false;
-    });
+    return loadedList;
   }
 
   @override
   void initState() {
-    _onlineDatabase();
+    _loadedList = _onlineDatabase();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Development Blog')),
-      drawer: MainDrawer(changeEntry: _changeEntry, loadedList: _loadedList),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: EntryWidget(data: _loadedList[_activeEntry]),
-        ),
-      ),
+    return FutureBuilder(
+      future: _loadedList,
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(child: const CircularProgressIndicator()),
+          );
+        }
+        if (asyncSnapshot.hasError) {
+          return Scaffold(
+            body: Center(child: const Text('Error fetching data')),
+          );
+        }
+        if (!asyncSnapshot.hasData) {
+          return Scaffold(body: Center(child: const Text('Database is empty')));
+        }
+        return Scaffold(
+          appBar: AppBar(title: const Text('Flutter Development Blog')),
+          drawer: MainDrawer(
+            changeEntry: _changeEntry,
+            loadedList: asyncSnapshot.data!,
+          ),
+          body: Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  EntryWidget(data: asyncSnapshot.data![_activeEntry]),
+                  const SizedBox(height: 50),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

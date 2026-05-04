@@ -14,6 +14,7 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormatter = DateFormat.yMd();
+    loadedList.sort((a, b) => b.date.compareTo(a.date));
 
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -29,16 +30,18 @@ class MainDrawer extends StatelessWidget {
             height: 500,
             child: ListView.builder(
               itemCount: loadedList.length,
-              itemBuilder: (context, index) => ListTile(
-                leading: Text(dateFormatter.format(loadedList[index].date)),
-                title: Text(loadedList[index].title),
-                hoverColor: Theme.of(context).scaffoldBackgroundColor,
-                mouseCursor: SystemMouseCursors.click,
-                onTap: () {
-                  changeEntry(index);
-                  Navigator.of(context).pop();
-                },
-              ),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Text(dateFormatter.format(loadedList[index].date)),
+                  title: Text(loadedList[index].title),
+                  hoverColor: Theme.of(context).scaffoldBackgroundColor,
+                  mouseCursor: SystemMouseCursors.click,
+                  onTap: () {
+                    changeEntry(index);
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
             ),
           ),
         ],

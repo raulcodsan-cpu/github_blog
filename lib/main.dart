@@ -8,9 +8,6 @@ final theme = ThemeData(
     seedColor: Color.fromARGB(255, 0, 9, 131),
     brightness: Brightness.dark,
   ),
-  textTheme: TextTheme(
-    headlineLarge: TextStyle(decoration: TextDecoration.underline),
-  ),
 );
 
 void main() {
@@ -26,7 +23,6 @@ class MainApp extends StatelessWidget {
       theme: theme,
       home: LayoutBuilder(
         builder: (context, constraints) {
-          //desktop
           if (constraints.maxWidth < 600) {
             return MobileWidget();
           }

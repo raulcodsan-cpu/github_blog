@@ -17,8 +17,7 @@ class DesktopWidget extends StatefulWidget {
 
 class _DestopWidget extends State<DesktopWidget> {
   var _activeEntry = 0;
-  final List<EntryData> _loadedList = [];
-  var isLoading = false;
+  late Future<List<EntryData>> _loadedList;
 
   void _changeEntry(int entryNo) {
     setState(() {
@@ -26,8 +25,7 @@ class _DestopWidget extends State<DesktopWidget> {
     });
   }
 
-  void _onlineDatabase() async {
-    isLoading = true;
+  Future<List<EntryData>> _onlineDatabase() async {
     final url = Uri.https(
       'shoppinglist-81ab6-default-rtdb.firebaseio.com',
       'blog_entries.json',
@@ -35,15 +33,14 @@ class _DestopWidget extends State<DesktopWidget> {
     final response = await http.get(url);
 
     if (response.statusCode >= 400 || response.body == 'null') {
-      print('Error retreiving data');
-      return;
+      throw Exception('Error retreiving data');
     }
 
     final Map<String, dynamic> responseData = json.decode(response.body);
-
+    final List<EntryData> loadedList = [];
     // response format : {-OqPoJd95Hafu2jrU0Zq: {likes: 0, title: Starting up a blog to share progress!}, -OqPoKl1-QRWpsxsKXGI: {likes: 0, title: Progress report on Flutter development.}}
     for (var resDataEntry in responseData.entries) {
-      _loadedList.add(
+      loadedList.add(
         EntryData(
           id: resDataEntry.key,
           title: resDataEntry.value['title'],
@@ -53,14 +50,12 @@ class _DestopWidget extends State<DesktopWidget> {
         ),
       );
     }
-    setState(() {
-      isLoading = false;
-    });
+    return loadedList;
   }
 
   @override
   void initState() {
-    _onlineDatabase();
+    _loadedList = _onlineDatabase();
     super.initState();
   }
 
@@ -69,36 +64,59 @@ class _DestopWidget extends State<DesktopWidget> {
     //final screenWidth = MediaQuery.of(context).size.width;
     //final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-      appBar: AppBar(
-        toolbarHeight: 100,
-        centerTitle: true,
-        title: Text('Flutter development blog', style: TextStyle(fontSize: 40)),
-
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            iconSize: 40,
-            onPressed: () => Scaffold.of(context).openDrawer(),
+    return FutureBuilder(
+      future: _loadedList,
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(child: const CircularProgressIndicator()),
+          );
+        }
+        if (asyncSnapshot.hasError) {
+          return Scaffold(
+            body: Center(child: const Text('Error fetching data')),
+          );
+        }
+        if (!asyncSnapshot.hasData) {
+          return Scaffold(body: Center(child: const Text('Database is empty')));
+        }
+        return Scaffold(
+          backgroundColor: Theme.of(context).canvasColor,
+          appBar: AppBar(
+            toolbarHeight: 100,
+            centerTitle: true,
+            title: Text(
+              'Flutter development blog',
+              style: TextStyle(fontSize: 40),
+            ),
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                iconSize: 40,
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+            ),
           ),
-        ),
-      ),
-      drawer: MainDrawer(changeEntry: _changeEntry, loadedList: _loadedList),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            verticalDirection: VerticalDirection.down,
-            children: [
-              SizedBox(height: 100),
-              if (!isLoading) EntryWidget(data: _loadedList[_activeEntry]),
-              if (isLoading) CircularProgressIndicator(),
-            ],
+          drawer: MainDrawer(
+            changeEntry: _changeEntry,
+            loadedList: asyncSnapshot.data!,
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  const SizedBox(height: 100),
+                  EntryWidget(data: asyncSnapshot.data![_activeEntry]),
+                  const SizedBox(height: 50),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
