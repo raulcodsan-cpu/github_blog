@@ -39,7 +39,7 @@ class MainDrawer extends StatelessWidget {
                         '/post/${posts[index].id}',
                         extra: posts[index],
                       );
-                      //Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                   ),
                 );

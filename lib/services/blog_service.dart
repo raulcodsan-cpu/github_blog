@@ -61,11 +61,13 @@ class BlogService {
   }
 
   Future<BlogPost?> fetchPostById(String id) async {
-    final uri = Uri.parse('$baseUrl/blog_entries/$id.json');
+    final uri = Uri.https(baseUrl, 'blog_entries/$id.json');
     try {
       final response = await _client.get(uri);
+      print(response);
       if (response.statusCode == 200) {
         final dynamic data = json.decode(response.body);
+        print(data);
         if (data == null) {
           return null;
         }

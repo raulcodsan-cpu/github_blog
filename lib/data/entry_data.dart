@@ -30,7 +30,7 @@ class BlogPost {
   }
 }
 
-/* class FavouritedNotifier extends StateNotifier<List<BlogPost>> {
+class FavouritedNotifier extends StateNotifier<List<BlogPost>> {
   FavouritedNotifier() : super([]);
 
   bool toggleEntryLiked(BlogPost entry) {
@@ -52,4 +52,3 @@ final favoritedProvider =
     StateNotifierProvider<FavouritedNotifier, List<BlogPost>>(
       (ref) => FavouritedNotifier(),
     );
- */

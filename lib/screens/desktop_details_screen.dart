@@ -20,17 +20,17 @@ class DesktopDetailsScreen extends StatefulWidget {
 }
 
 class _DesktopDetailsScreenState extends State<DesktopDetailsScreen> {
-  late Future<BlogPost?> _postFuture;
+  late Future<BlogPost?> _postsFuture;
   BlogPost? _currentPost;
 
   @override
   void initState() {
     _currentPost = widget.initialPost;
     if (_currentPost == null) {
-      _postFuture = widget.blogService.fetchPostById(widget.postId);
+      _postsFuture = widget.blogService.fetchPostById(widget.postId);
     } else {
       // TODO: Future.value(_currentPost)
-      _postFuture = Future.value(_currentPost);
+      _postsFuture = Future.value(_currentPost);
     }
     super.initState();
   }
@@ -53,7 +53,7 @@ class _DesktopDetailsScreenState extends State<DesktopDetailsScreen> {
       body: SingleChildScrollView(
         child: Center(
           child: FutureBuilder(
-            future: _postFuture,
+            future: _postsFuture,
             builder: (context, asyncSnapshot) {
               if (asyncSnapshot.connectionState == ConnectionState.waiting &&
                   _currentPost == null) {

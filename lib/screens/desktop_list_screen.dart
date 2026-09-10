@@ -43,6 +43,7 @@ class _DesktopScreenListState extends State<DesktopScreenList> {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+        actions: [IconButton(onPressed: _reload, icon: Icon(Icons.refresh))],
       ),
       drawer: MainDrawer(futureList: _postsFuture),
       body: Center(

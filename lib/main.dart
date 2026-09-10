@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_blog/router/app_router.dart';
 import 'package:github_blog/services/blog_service.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
