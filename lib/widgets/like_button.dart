@@ -1,4 +1,4 @@
-import 'dart:convert';
+/* import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class LikeButton extends ConsumerStatefulWidget {
   const LikeButton({super.key, required this.data});
-  final EntryData data;
+  final BlogPost data;
 
   @override
   ConsumerState<LikeButton> createState() {
@@ -78,7 +78,7 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
 
   @override
   Widget build(BuildContext context) {
-    bool isFavourited = ref.watch(favoritedProvider).contains(widget.data);
+    //bool isFavourited = ref.watch(favoritedProvider).contains(widget.data);
     final loadedLikes = _loadLikes();
 
     return Container(
@@ -90,14 +90,14 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            onPressed: isFavourited
+            onPressed: /* isFavourited
                 ? null
                 : () {
                     ref
                         .read(favoritedProvider.notifier)
                         .toggleEntryLiked(widget.data);
-                    _upLike();
-                  },
+                    _upLike(); 
+                  }*/(){},
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               transitionBuilder: (child, animation) {
@@ -151,3 +151,4 @@ class _LikeButtonState extends ConsumerState<LikeButton> {
     );
   }
 }
+ */

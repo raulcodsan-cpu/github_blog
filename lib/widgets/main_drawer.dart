@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:github_blog/data/entry_data.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({
-    super.key,
-    required this.changeEntry,
-    required this.loadedList,
-  });
-  final void Function(int entryNo) changeEntry;
-  final List<EntryData> loadedList;
+  const MainDrawer({super.key, required this.futureList});
+  final Future<List<BlogPost>> futureList;
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +23,27 @@ class MainDrawer extends StatelessWidget {
 
           SizedBox(
             height: 500,
-            child: ListView.builder(
-              itemCount: loadedList.length,
-              itemBuilder: (context, index) => ListTile(
-                leading: Text(dateFormatter.format(loadedList[index].date)),
-                title: Text(loadedList[index].title),
-                hoverColor: Theme.of(context).scaffoldBackgroundColor,
-                mouseCursor: SystemMouseCursors.click,
-                onTap: () {
-                  changeEntry(index);
-                  Navigator.of(context).pop();
-                },
-              ),
+            child: FutureBuilder(
+              future: futureList,
+              builder: (context, asyncSnapshot) {
+                final posts = asyncSnapshot.data ?? [];
+                return ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) => ListTile(
+                    leading: Text(dateFormatter.format(posts[index].date)),
+                    title: Text(posts[index].title),
+                    hoverColor: Theme.of(context).scaffoldBackgroundColor,
+                    mouseCursor: SystemMouseCursors.click,
+                    onTap: () {
+                      context.go(
+                        '/post/${posts[index].id}',
+                        extra: posts[index],
+                      );
+                      //Navigator.of(context).pop();
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ],

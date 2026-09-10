@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:github_blog/screens/desktop_widget.dart';
-import 'package:github_blog/screens/mobile_widget.dart';
+import 'package:github_blog/router/app_router.dart';
+import 'package:github_blog/services/blog_service.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
@@ -14,26 +15,36 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(ProviderScope(child: const MainApp()));
+  // Removes the '#' symbol from web URLs (e.g. /post/123 instead of /#/post/123)
+  usePathUrlStrategy();
+
+  final blogService = BlogService();
+  final appRouter = AppRouter(blogService: blogService);
+  runApp(ProviderScope(child: BlogWebApp(appRouter: appRouter)));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class BlogWebApp extends StatelessWidget {
+  const BlogWebApp({super.key, required this.appRouter});
+  final AppRouter appRouter;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       theme: theme,
-      home: LayoutBuilder(
+      title: 'Portfolio Blog',
+      routerConfig: appRouter.router,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+/* home: LayoutBuilder(
         builder: (context, constraints) {
           //desktop
           if (constraints.maxWidth < 600) {
             return MobileWidget();
           }
 
-          return DesktopWidget();
+          return PostListScreen();
         },
-      ),
-    );
-  }
-}
+      ), */

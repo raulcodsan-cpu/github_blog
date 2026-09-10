@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/legacy.dart';
 
-class EntryData {
-  EntryData({
+class BlogPost {
+  BlogPost({
     required this.id,
     required this.title,
     required this.subtitle,
@@ -16,12 +16,24 @@ class EntryData {
   final String body;
   final DateTime date;
   int likes;
+
+  factory BlogPost.fromJson(Map<String, dynamic> json, {String? docID}) {
+    return BlogPost(
+      id: docID ?? json['id'] as String,
+      title: json['title'] as String,
+      subtitle: json['subtitle'] as String,
+      body: json['body'] as String,
+      date: json['date'] != null
+          ? DateTime.tryParse(json['date'] as String) ?? DateTime.now()
+          : DateTime.now(),
+    );
+  }
 }
 
-class FavouritedNotifier extends StateNotifier<List<EntryData>> {
+/* class FavouritedNotifier extends StateNotifier<List<BlogPost>> {
   FavouritedNotifier() : super([]);
 
-  bool toggleEntryLiked(EntryData entry) {
+  bool toggleEntryLiked(BlogPost entry) {
     final isLiked = state.contains(entry);
 
     if (isLiked) {
@@ -37,6 +49,7 @@ class FavouritedNotifier extends StateNotifier<List<EntryData>> {
 }
 
 final favoritedProvider =
-    StateNotifierProvider<FavouritedNotifier, List<EntryData>>(
+    StateNotifierProvider<FavouritedNotifier, List<BlogPost>>(
       (ref) => FavouritedNotifier(),
     );
+ */

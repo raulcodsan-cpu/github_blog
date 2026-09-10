@@ -6,7 +6,7 @@ import 'package:github_blog/widgets/like_button.dart';
 class EntryWidget extends StatelessWidget {
   const EntryWidget({super.key, required this.data});
 
-  final EntryData data;
+  final BlogPost data;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class EntryWidget extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          LikeButton(data: data),
+          //LikeButton(data: data),
         ],
       ),
     );
