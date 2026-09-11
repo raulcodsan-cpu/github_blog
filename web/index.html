@@ -15,7 +15,9 @@
     the `--base-href` argument provided to `flutter build`.
   -->
     <!-- THe line below is to handle githubs 404 file not found error-->
-  <base href="/github_blog/">
+  <!--<base href="/github_blog/">-->
+  <!-- But because we hardcode it on github actions we keep default -->
+  <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">

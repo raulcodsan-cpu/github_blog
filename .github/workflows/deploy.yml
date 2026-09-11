@@ -28,8 +28,13 @@ jobs:
         with:
           channel: 'stable'
 
+          # We build the app on base-href flag (/web/index.html)
       - name: Build Web Application
         run: flutter build web --base-href "/${{ github.event.repository.name }}/" --release
+
+        # We copy the generated content to 404.html to handle page reloading.background: 
+      - name: Create 404.html for Pages routing
+        run: cp build/web/index.html build/web/404.html
 
       - name: Upload GitHub Pages Artifact
         uses: actions/upload-pages-artifact@v3
